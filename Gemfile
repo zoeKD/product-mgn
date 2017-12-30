@@ -8,6 +8,8 @@ gem 'pg'
 gem 'puma'
 gem 'rails', '5.1.4'
 gem 'redis'
+gem 'active_model_serializers'
+
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
@@ -16,6 +18,7 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'webpacker'
+gem 'foreman'
 
 group :development do
   gem 'web-console', '>= 3.3.0'

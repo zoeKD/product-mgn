@@ -1,0 +1,53 @@
+<h1>Products</h1>
+
+<ul>
+  <% @products.each do |product| %>
+    <li> <%= product.id %> - <%= product.name %> (<%= product.size %>)</li>
+  <% end %>
+</ul>
+
+
+<div id="products">
+  <p>{{ message }}</p>
+  <table>
+    <thead>
+      <tr>
+        <th @click="sort_id">Id</th>
+        <th @click="sort_name">Name</th>
+        <th @click="sort_product">Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        is="product-row"
+        v-for="product in products"
+        :product="product">
+      </tr>
+      <tr>
+        <td>
+          <!-- Input -->
+          <input type="text" v-model="product.name"><br>
+          <!-- Validation errors -->
+          <span style="color:red">{{ errors.name }}</span>
+        </td>
+        <td>
+          <!-- Input -->
+          <input type="text" v-model="product.size"><br>
+          <!-- Validation errors -->
+          <span style="color:red">{{ errors.size }}</span>
+        </td>
+        <!-- button click calls addProduct -->
+        <td><button @click="hireProduct">Add</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<script type="text/x-template" id="product-row">
+  <tr>
+    <td>{{ product.id }}</td>
+    <td>{{ product.name }}</td>
+    <td>{{ product.size }}</td>
+  </tr>
+</script>

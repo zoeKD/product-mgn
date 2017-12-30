@@ -1,0 +1,8 @@
+<%= simple_form_for(product) do |f| %>
+  <%= f.input :name %>
+  <%= f.input :size %>
+  <%= f.fields_for :prices do |builder| %>
+    <%=  render "prices_fields", f: builder%>
+  <% end %>
+  <%= f.button :submit, class: "btn btn-primary" %>
+<% end %>

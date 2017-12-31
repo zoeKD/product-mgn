@@ -4,7 +4,7 @@
   <% end %>
   <ul class="hidden-xs hidden-sm">
     <% if user_signed_in? %>
-      <li> <%= link_to "View all products", products_path %></li>
+      <li> <%= link_to "View all products", root_path %></li>
       <li> <%= link_to "Add a product", new_product_path %></li>
       <li id="sidebar-logout">
         <%= link_to destroy_user_session_path, method: :delete do %>
@@ -24,7 +24,7 @@
       <div class="dropdown">
         <i class="fa fa-bars dropdown-toggle" data-toggle="dropdown"></i>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><%= link_to "View all products", products_path %></li>
+          <li><%= link_to "View all products", root_path %></li>
           <li><%= link_to "Add a product", new_product_path %></li>
           <li>
             <%= link_to destroy_user_session_path, method: :delete do %>

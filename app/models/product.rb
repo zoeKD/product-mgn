@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   belongs_to :user
   has_many :prices
   validates :name, :size, presence: true
-  accepts_nested_attributes_for :prices
+  accepts_nested_attributes_for :prices, allow_destroy: true
 
   include ActiveModel::Serializers::JSON
 

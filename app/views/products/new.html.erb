@@ -1,5 +1,21 @@
 <h1>Add a new product</h1>
 
-<%= render "form", product: @product%>
-
-<div id="new-product"></div>
+<%= simple_form_for(@product) do |f| %>
+  <input type="hidden" name="price-number" v-model="product.pricesNumber">
+  <%= f.input :name   %>
+  <%= f.input :size %>
+  <div id="price-fields" class="form-inline" v-for="price in product.pricesNumber">
+    Add a price:
+      <select name="" id="" v-model="itemsPerPage">
+        <option value="20" selected>20 per page</option>
+        <option value="50">50 per page</option>
+        <option value="100">100 per page</option>
+      </select>
+      <%= f.fields_for :prices do |prices_form| %>
+        <%= prices_form.input :currency, collection: %w(EUR USD GBP JPY), prompt: "Select a currency", label:false %>
+        <%= prices_form.input :value, label: false, placeholder: "100" %>
+      <% end %>
+      <button class="btn btn-secondary" v-on:click.prevent="addPriceFields">Add another price</button>
+  </div>
+  <%= f.button :submit, class: "btn btn-primary" %>
+<% end %>

@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit]
   before_action :set_user
+  skip_before_action :authenticate_user!, :only => [:all], if: :json_request?
 
   def index
     @products = @user.products
@@ -10,28 +11,24 @@ class ProductsController < ApplicationController
     end
   end
 
+  def all
+    @products = Product.all
+    render json: @products
+  end
+
   def new
     @product = Product.new
+    @product.prices.build
   end
 
   def create
-    @product = Product.new(product_params)
+    @product = Product.new(name: params[:product][:name], size: params[:product][:size])
     @product.user = @user
-    respond_to do |format|
-      format.html do
-        if @product.save
-          redirect_to products_path
-        else
-          render :new
-        end
-      end
-      format.json do
-        if @product.save
-          render :json => @product
-        else
-          render :json => { :errors => @product.errors.messages }, :status => 422
-        end
-      end
+    raise
+    if @product.save
+      redirect_to root_path
+    else
+      render :new
     end
   end
 
@@ -50,6 +47,10 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :size, :user)
+    params.permit(:id, :name, :size, :user, prices_attributes: [:id, :currency, :value])
+  end
+
+  def json_request?
+    request.format.symbol == :json
   end
 end

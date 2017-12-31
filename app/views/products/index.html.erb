@@ -1,46 +1,51 @@
 <h1>Products</h1>
 
-<ul>
-  <% @products.each do |product| %>
-    <li> <%= product.id %> - <%= product.name %> (<%= product.size %>)</li>
-  <% end %>
-</ul>
+  <form action="/products" method="post">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"><a @click="sortById">Id</a></th>
+          <th scope="col"><a @click="sortByName">Name</a></th>
+          <th scope="col"><a @click="sortBySize">Size</a></th>
+          <th scope="col">EUR</th>
+          <th scope="col">USD</th>
+          <th scope="col">GBP</th>
+          <th scope="col">JPY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          is="product-row"
+          v-for="product in paginatedProducts"
+          :product="product">
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="text" name="name" v-model="product.name"><br>
+            <span style="color:red">{{ errors.name }}</span>
+          </td>
+          <td>
+            <input type="text" name="size" v-model="product.size"><br>
+            <span style="color:red">{{ errors.email }}</span>
+          </td>
+          <td><input type="submit" class="btn btn-primary" value="Add" @click="addProduct"></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
 
-
-<div id="products">
-  <p>{{ message }}</p>
-  <table>
-    <thead>
-      <tr>
-        <th @click="sort_id">Id</th>
-        <th @click="sort_name">Name</th>
-        <th @click="sort_product">Size</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        is="product-row"
-        v-for="product in products"
-        :product="product">
-      </tr>
-      <tr>
-        <td>
-          <!-- Input -->
-          <input type="text" v-model="product.name"><br>
-          <!-- Validation errors -->
-          <span style="color:red">{{ errors.name }}</span>
-        </td>
-        <td>
-          <!-- Input -->
-          <input type="text" v-model="product.size"><br>
-          <!-- Validation errors -->
-          <span style="color:red">{{ errors.size }}</span>
-        </td>
-        <!-- button click calls addProduct -->
-        <td><button @click="hireProduct">Add</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <ul class="list-inline">
+    <li v-for="pageNumber in totalPages">
+      <a href="#" @click="setPage(pageNumber)"  :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages - 1 && Math.abs(pageNumber - currentPage) > 3), first:(pageNumber == 0 && Math.abs(pageNumber - currentPage) > 3)}">{{ pageNumber }}</a>
+    </li>
+  </ul>
+    <select name="" id="" v-model="itemsPerPage">
+      <option value="20" selected>20 per page</option>
+      <option value="50">50 per page</option>
+      <option value="100">100 per page</option>
+    </select>
 </div>
 
 
@@ -49,5 +54,9 @@
     <td>{{ product.id }}</td>
     <td>{{ product.name }}</td>
     <td>{{ product.size }}</td>
+    <td>{{ product.prices.filter(a => a.currency === "eur")[0]? product.prices.filter(a => a.currency === "eur")[0].value + " €": "" }}</td>
+    <td>{{ product.prices.filter(a => a.currency === "usd")[0]? product.prices.filter(a => a.currency === "usd")[0].value + " $": "" }}</td>
+    <td>{{ product.prices.filter(a => a.currency === "gbp")[0]? product.prices.filter(a => a.currency === "gbp")[0].value + " £": "" }}</td>
+    <td>{{ product.prices.filter(a => a.currency === "jpy")[0]? product.prices.filter(a => a.currency === "jpy")[0].value + " ¥": "" }}</td>
   </tr>
 </script>

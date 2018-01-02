@@ -38,4 +38,4 @@ User.create(
   end
 end
 
-puts "finished seeding"
+puts "Seeding is complete"

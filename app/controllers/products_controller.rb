@@ -1,19 +1,8 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit]
-  before_action :set_user
-  skip_before_action :authenticate_user!, :only => [:all], if: :json_request?
+  before_action :set_user, only: [:index, :create, :show]
 
   def index
     @products = @user.products
-    respond_to do |format|
-      format.html
-      format.json { render :json => @products }
-    end
-  end
-
-  def all
-    @products = Product.all
-    render json: @products
   end
 
   def new
@@ -22,35 +11,24 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new(name: params[:product][:name], size: params[:product][:size])
+    attributes = { params[:product][:attributes] => params[:attributeValue] }
+    @product = Product.new(name: params[:product][:name], size: params[:product][:size], product_attributes: JSON.generate(attributes))
     @product.user = @user
-    raise
     if @product.save
+      params[:priceNumber].to_i.times do |i|
+        currency = "currency#{i+1}"
+        value = "value#{i+1}"
+        Price.create(currency: params[currency.to_sym], value: params[value.to_sym], product: @product)
+      end
       redirect_to root_path
     else
       render :new
     end
   end
 
-  def show
-
-  end
-
   private
 
   def set_user
     @user = current_user
-  end
-
-  def set_product
-    @product = Product.find(params[:id])
-  end
-
-  def product_params
-    params.permit(:id, :name, :size, :user, prices_attributes: [:id, :currency, :value])
-  end
-
-  def json_request?
-    request.format.symbol == :json
   end
 end

@@ -5,9 +5,8 @@ Rails.application.routes.draw do
   resources :users, only: :show
   resources :products, only: [:new, :create]
 
-  get 'products', to: "products#all", as: :all_products
 
   namespace :admin do
-    resources :products, only: [:index, :show, :edit]
+    resources :product_attributes, only: [:index, :create, :destroy]
   end
 end

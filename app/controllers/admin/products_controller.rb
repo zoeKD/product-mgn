@@ -1,12 +1,17 @@
 class Admin::ProductsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index]
 
-  def index
-    @products = Product.all
-    respond_to do |format|
-      format.html
-      format.json { render :json => @products }
-    end
+  def attributes
+    @attributes = Product.attributes
   end
 
+  def add_attribute
+    Product.attributes.push(params[:attribute].capitalize)
+    redirect_to :admin_product_attributes
+  end
+
+  def delete_attribute
+    attribute_id = Product.attributes.find_index(params[:attribute])
+    Product.attributes.delete_at(attribute_id)
+    redirect_to :admin_product_attributes
+  end
 end

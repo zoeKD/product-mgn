@@ -20,6 +20,12 @@ User.create(
   email: "dupont@gmail.com",
   password: "superdupont")
 
+User.create(
+  username: "admin",
+  email: "admin@gmail.com",
+  password: "superadmin",
+  admin: true)
+
 100.times do
 
   product = Product.create(

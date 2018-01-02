@@ -1,0 +1,16 @@
+<h1>Product attributes</h1>
+
+<ul>
+  <% @attributes.each do |attribute| %>
+    <li> <%= attribute.name %> <%= link_to admin_product_attribute_path(attribute), method: :delete, data: {confirm: "Are you sure?"} do %>
+         <small>Delete</small>
+        <% end %></li>
+  <% end %>
+</ul>
+
+<label for="attribute">Add an attribute</label>
+<form action="/admin/product_attributes" method="post" class="form-inline">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="text" name="attribute" class="form-control">
+  <input type="submit" class="btn btn-primary" value="Create new attribute">
+</form>

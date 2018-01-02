@@ -1,7 +1,7 @@
 <h1>Products</h1>
-
   <form action="/products" method="post">
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <input type="hidden" id="userId" value=<%= @user.id %>>
     <table class="table">
       <thead>
         <tr>
@@ -19,18 +19,6 @@
           is="product-row"
           v-for="product in paginatedProducts"
           :product="product">
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <input type="text" name="name" v-model="product.name"><br>
-            <span style="color:red">{{ errors.name }}</span>
-          </td>
-          <td>
-            <input type="text" name="size" v-model="product.size"><br>
-            <span style="color:red">{{ errors.email }}</span>
-          </td>
-          <td><input type="submit" class="btn btn-primary" value="Add" @click="addProduct"></td>
         </tr>
       </tbody>
     </table>

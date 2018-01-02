@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var app = new Vue({
     el: '#products',
     data: {
+      userId: "",
       products: [],
       product: {
         name: '',
@@ -42,17 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
     methods: {
-      addProduct: function() {
-        this.products.push(this.product);
-      },
       addPriceFields: function() {
         this.product.pricesNumber += 1;
       },
       sortById: function() {
-        this.products.reverse()
+        const sorted = this.products.sort((a,b) => (a.id < b.id) ? -i : i)
       },
       sortByName: function() {
-        const sorted = this.products.sort((a,b) => {
+        this.products.sort((a,b) => {
           if(a.name == b.name) {
             return (a.id < b.id) ? -1 : (a.id > b.id) ? 1 : 0;
             } else {
@@ -61,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       },
       sortBySize: function() {
-        const sorted = this.products.sort((a,b) => {
+        this.products.sort((a,b) => {
           if(a.size == b.size) {
             return (a.id < b.id) ? -1 : (a.id > b.id) ? 1 : 0;
             } else {
@@ -81,11 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
     mounted: function() {
       var that;
       that = this;
-      fetch('/products')
+      const user_id = document.getElementById("userId");
+      if (user_id) {
+        that.userId = user_id.value
+        fetch(`users/${that.userId}`)
         .then(response => response.json())
         .then(data => {
-          that.products = data;
-        })
+          that.products = data.products;
+          })
+        }
       }
     }) // end of vue instance
+
 })

@@ -1,21 +1,23 @@
 <h1>Add a new product</h1>
 
 <%= simple_form_for(@product) do |f| %>
-  <input type="hidden" name="price-number" v-model="product.pricesNumber">
+  <input type="hidden" name="priceNumber" v-model="product.pricesNumber">
   <%= f.input :name   %>
   <%= f.input :size %>
-  <div id="price-fields" class="form-inline" v-for="price in product.pricesNumber">
-    Add a price:
-      <select name="" id="" v-model="itemsPerPage">
-        <option value="20" selected>20 per page</option>
-        <option value="50">50 per page</option>
-        <option value="100">100 per page</option>
-      </select>
-      <%= f.fields_for :prices do |prices_form| %>
-        <%= prices_form.input :currency, collection: %w(EUR USD GBP JPY), prompt: "Select a currency", label:false %>
-        <%= prices_form.input :value, label: false, placeholder: "100" %>
-      <% end %>
-      <button class="btn btn-secondary" v-on:click.prevent="addPriceFields">Add another price</button>
+  <div class="form-inline space-bottom">
+    <%= f.input :attributes, collection: ProductAttribute.all, prompt: "Choose an attribute", selected: false %>
+    <input type="text" name="attributeValue" class="form-control">
+  </div>
+  <div id="price-fields" class="form-inline space-bottom" v-for="price in product.pricesNumber">
+    <strong>Add a price</strong>
+    <select v-bind:name="'currency' + price" class="form-control">
+      <option value="eur" selected>EUR</option>
+      <option value="usd">USD</option>
+      <option value="gbp">GBP</option>
+      <option value="jpy">JPY</option>
+    </select>
+    <input type="number" v-bind:name="'value' + price" placeholder="100" class="form-control">
+    <button class="btn btn-secondary" v-on:click.prevent="addPriceFields">Add another price</button>
   </div>
   <%= f.button :submit, class: "btn btn-primary" %>
 <% end %>
